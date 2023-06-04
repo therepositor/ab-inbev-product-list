@@ -1,95 +1,192 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import styles from "./page.module.css";
+import { Header } from "../app/components/Header";
+import { Box } from "../lib/mui";
+import { IProduct } from "./types/product";
+import { useEffect, useState } from "react";
+
+import SearchComp from "./components/Search";
+import { GET_PRODUCT } from "./configs/endpoint";
+import axios from "axios";
+import SortComp from "./components/Sort";
+import FloatingActionButtin from "./components/FloatingActionButtin";
+import AddProduct from "./components/AddProduct";
+import Products from "./components/Products";
+import { LOGO } from "../app/assets/index";
+import NotificationBadge from "./components/NotificationBadge";
+import Cart from "./components/Cart";
+import { ACTIVE_BG, HOVER_BG } from "./configs/colorConfigs";
 
 export default function Home() {
+  // set product list
+  const [products, setProducts] = useState<IProduct[]>([
+    {
+      difficulty: "easy",
+      id: "1",
+      image:
+        "/Users/josephoguntebi/tutorials/beertech/abimbev-productlist/src/app/assets/images/png/abinbev.png",
+      title: "first",
+      price: 5,
+    },
+    {
+      difficulty: "easy",
+      id: "2",
+      image: "src/app/assets/images/png/abinbev.png",
+      title: "second",
+      price: 56,
+    },
+    {
+      difficulty: "easy",
+      id: "3",
+      image: "src/app/assets/images/png/abinbev.png",
+      title: "third",
+      price: 67,
+    },
+    {
+      difficulty: "easy",
+      id: "4",
+      image: "src/app/assets/images/png/abinbev.png",
+      title: "fourth",
+      price: 3,
+    },
+    {
+      difficulty: "easy",
+      id: "5",
+      image: "src/app/assets/images/png/abinbev.png",
+      title: "fifth",
+      price: 90,
+    },
+  ]);
+  const getProducts = async () => {
+    const options = {
+      method: "GET",
+      url: GET_PRODUCT,
+      headers: {
+        "X-RapidAPI-Key": process.env.X_RAPIDAPI_KEY,
+        "X-RapidAPI-Host": process.env.X_RAPIDAPI_HOST,
+      },
+    };
+    try {
+      // const response = await axios.request(options);
+      // console.log(response.data);
+      // setProducts(response.data);
+    } catch (error) {
+      console.error(error);
+      if (error === 400) {
+        return "Bad request";
+      } else if (error === 401) {
+        return "Unauthorized";
+      } else if (error === 403) {
+        return "request is forbidden";
+      } else if (error === 404) {
+        return "Page not found";
+      } else if (error === 500) {
+        return "Internal Server error";
+      } else {
+        return "Request Failed";
+      }
+    }
+  };
+  // useEffect to request product list when the page mount
+  useEffect(() => {
+    getProducts();
+
+    return () => {};
+  }, [products]);
+  // open form to add a product
+
+  const [open, setOpen] = useState<boolean>(false);
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
+  // open cart
+  const [openCart, setOpenCart] = useState<boolean>(false);
+  const handleOpenCart = () => {
+    setOpenCart(true);
+  };
+
+  // add to cart
+  const [cart, setCart] = useState<IProduct[]>([]);
+  const addToCart = (id: string) => {
+    //check if the id match with any product on the product list
+    const findProduct = products.find((product) => product.id === id)!;
+
+    setCount((count) => count + 1);
+    return setCart([...cart, findProduct]);
+  };
+  // handle count
+  const [count, setCount] = useState<number>(0);
+  // handle remove item form cart
+  const removeItemFromCart = (id: string) => {
+    const filteredCart = cart.filter((product) => product.id !== id);
+
+    setCart(filteredCart);
+  };
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        <Header />
+        <Box onClick={handleOpenCart}>
+          {" "}
+          <NotificationBadge count={count} />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: `calc(100vh - 60px)`,
+          width: "100%",
+          overflow: "scroll",
+          marginTop: 1,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flexx-start",
+            alignItems: "center",
+            width: "100%",
+            paddingLeft: "0.5rem",
+            gap: 1,
+            position: "fixed",
+            backgroundColor: HOVER_BG,
+            zIndex: 10,
+          }}
+        >
+          <SearchComp products={products} setProducts={setProducts} />
+          <Box sx={{ paddingY: "1rem" }}>
+            <SortComp products={products} setProducts={setProducts} />
+          </Box>
+        </Box>
+        <Box sx={{ marginTop: "100px" }}>
+          {" "}
+          <Products products={products} addToCart={addToCart} />
+        </Box>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+        {/* <FloatingActionButtin onClick={handleOpenModal} /> */}
+      </Box>
+      {open && <AddProduct open={open} setOpen={setOpen} />}
+      {openCart && (
+        <Cart
+          open={openCart}
+          setOpen={setOpenCart}
+          cart={cart}
+          setCount={setCount}
+          count={count}
+          removeFromCart={removeItemFromCart}
         />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      )}
     </main>
-  )
+  );
 }
