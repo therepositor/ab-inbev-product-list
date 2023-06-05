@@ -7,12 +7,12 @@ import { useEffect, useState } from "react";
 
 import SearchComp from "./components/Search";
 import { GET_PRODUCT } from "./configs/endpoint";
-import axios from "axios";
+
 import SortComp from "./components/Sort";
 import FloatingActionButtin from "./components/FloatingActionButtin";
 import AddProduct from "./components/AddProduct";
 import Products from "./components/Products";
-import { LOGO } from "../app/assets/index";
+
 import NotificationBadge from "./components/NotificationBadge";
 import Cart from "./components/Cart";
 import { ACTIVE_BG, HOVER_BG } from "./configs/colorConfigs";
@@ -23,8 +23,7 @@ export default function Home() {
     {
       difficulty: "easy",
       id: "1",
-      image:
-        "/Users/josephoguntebi/tutorials/beertech/abimbev-productlist/src/app/assets/images/png/abinbev.png",
+      image: "src/app/assets/images/png/abinbev.png",
       title: "first",
       price: 5,
     },
