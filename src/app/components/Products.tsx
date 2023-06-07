@@ -1,4 +1,4 @@
-import { Box } from "@/lib/mui";
+import { Box, Grid } from "@/lib/mui";
 import React, { useEffect, useState } from "react";
 import Cocktail from "./Product";
 import { IProduct } from "../types/product";
@@ -15,8 +15,8 @@ type Props = {
 const Products = (props: Props) => {
   const { products, addToCart } = props;
   return (
-    <Box sx={{ marginTop: "2rem" }} className={styles.container}>
-      <Box className="products">
+    <Grid sx={{ marginTop: "2rem" }} className={styles.container}>
+      <Grid container spacing={2} item className="products">
         {products.map((product: IProduct, index: number) => {
           return (
             <Product
@@ -30,8 +30,8 @@ const Products = (props: Props) => {
             />
           );
         })}
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   );
 };
 

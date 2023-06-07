@@ -5,6 +5,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Grid,
   Typography,
 } from "@/lib/mui";
 import React, { ChangeEvent } from "react";
@@ -19,13 +20,14 @@ const Product = (props: Props) => {
   //add to cart
 
   return (
-    <Box sx={{ marginY: 1 }}>
+    <Grid item xs={12} md={6} lg={3} sx={{ marginY: 1 }}>
       <Card sx={{ maxWidth: 345 }}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardMedia
             component="img"
             height="140"
             image={image}
+            src={image}
             alt="green iguana"
           />
           <CardContent>
@@ -61,7 +63,7 @@ const Product = (props: Props) => {
           </CardContent>
         </Box>
       </Card>
-    </Box>
+    </Grid>
   );
 };
 

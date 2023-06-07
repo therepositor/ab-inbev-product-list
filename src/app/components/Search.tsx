@@ -106,7 +106,15 @@ const SearchComp = (props: Props) => {
     //   />
     // </Search>
     <input
-      style={{ height: "50px", backgroundColor: WHITE, padding: "0 0.2rem" }}
+      style={{
+        height: "50px",
+        backgroundColor: WHITE,
+        padding: "0 0.2rem",
+        outline: "none",
+        borderRadius: "8px",
+        borderStyle: "none",
+        border: "1px solid #1a202c",
+      }}
       type="search"
       value={searchTerm}
       onChange={handleSearchTerm}

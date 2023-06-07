@@ -1,7 +1,7 @@
 "use client";
 import styles from "./page.module.css";
 import { Header } from "../app/components/Header";
-import { Box } from "../lib/mui";
+import { Box, Grid } from "../lib/mui";
 import { IProduct } from "./types/product";
 import { useEffect, useState } from "react";
 
@@ -21,35 +21,35 @@ export default function Home() {
   // set product list
   const [products, setProducts] = useState<IProduct[]>([
     {
-      difficulty: "easy",
+      difficulty: "Sold out",
       id: "1",
       image: "src/app/assets/images/png/abinbev.png",
-      title: "first",
+      title: "Product 1",
       price: 5,
     },
     {
-      difficulty: "easy",
+      difficulty: "Available",
       id: "2",
       image: "src/app/assets/images/png/abinbev.png",
-      title: "second",
+      title: "Product 2",
       price: 56,
     },
     {
-      difficulty: "easy",
+      difficulty: "Available",
       id: "3",
       image: "src/app/assets/images/png/abinbev.png",
       title: "third",
       price: 67,
     },
     {
-      difficulty: "easy",
+      difficulty: "Sold out",
       id: "4",
       image: "src/app/assets/images/png/abinbev.png",
       title: "fourth",
       price: 3,
     },
     {
-      difficulty: "easy",
+      difficulty: "Available",
       id: "5",
       image: "src/app/assets/images/png/abinbev.png",
       title: "fifth",
@@ -123,14 +123,18 @@ export default function Home() {
     setCart(filteredCart);
   };
   return (
-    <main className={styles.main}>
-      <Box
+    <Grid container sx={{ padding: "0 1rem" }}>
+      <Grid
+        item
+        lg={12}
+        xs={12}
         sx={{
           display: "flex",
           width: "100%",
           justifyContent: "space-between",
           flexDirection: "row",
           alignItems: "center",
+          marginTop: "1rem",
         }}
       >
         <Header />
@@ -138,15 +142,18 @@ export default function Home() {
           {" "}
           <NotificationBadge count={count} />
         </Box>
-      </Box>
-      <Box
+      </Grid>
+      <Grid
+        item
+        lg={12}
+        xs={12}
         sx={{
           display: "flex",
           flexDirection: "column",
           height: `calc(100vh - 60px)`,
           width: "100%",
           overflow: "scroll",
-          marginTop: 1,
+          PaddingTop: 1,
         }}
       >
         <Box
@@ -159,7 +166,7 @@ export default function Home() {
             paddingLeft: "0.5rem",
             gap: 1,
             position: "fixed",
-            backgroundColor: HOVER_BG,
+            backgroundColor: "#e2e8f0",
             zIndex: 10,
           }}
         >
@@ -168,13 +175,13 @@ export default function Home() {
             <SortComp products={products} setProducts={setProducts} />
           </Box>
         </Box>
-        <Box sx={{ marginTop: "100px" }}>
+        <Grid sx={{ marginTop: "100px" }}>
           {" "}
           <Products products={products} addToCart={addToCart} />
-        </Box>
+        </Grid>
 
         {/* <FloatingActionButtin onClick={handleOpenModal} /> */}
-      </Box>
+      </Grid>
       {open && <AddProduct open={open} setOpen={setOpen} />}
       {openCart && (
         <Cart
@@ -186,6 +193,6 @@ export default function Home() {
           removeFromCart={removeItemFromCart}
         />
       )}
-    </main>
+    </Grid>
   );
 }
