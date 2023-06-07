@@ -7,7 +7,7 @@ type Props = {};
 export const Header = (props: Props) => {
   return (
     <header className="header">
-      <Image src={LOGO} alt="ab-imbev" height={60} />
+      <Image src={LOGO} alt="ab-imbev" height={40} width={100} />
     </header>
   );
 };
